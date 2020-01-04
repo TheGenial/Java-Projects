@@ -1,0 +1,93 @@
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class TEST {
+    public static void main(String[] args) throws Exception {
+        List<Integer> c = new ArrayList<Integer>();
+        List<Integer> d = new ArrayList<Integer>();
+        List<Integer> x = new ArrayList<Integer>();
+        List<String> text = new ArrayList<String>();
+        List<String> list = new ArrayList<String>();
+        File file = new File("C:\\Users\\Arif\\Desktop\\test.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        Pattern e = Pattern.compile(".*\\[ERROR\\] [A-Za-z]+ ([A-Za-z0-9]+)");
+        Pattern f = Pattern.compile(".*\\[WARNING\\] [A-Za-z]+ ([A-Za-z0-9]+)");
+        Pattern g = Pattern.compile(".*\\[INFO\\] [A-Za-z]+ ([A-Za-z0-9]+)");
+        String st;
+        float percentage=0;
+        while ((st = br.readLine()) != null) {
+            Matcher m = e.matcher(st);
+            Matcher n = f.matcher(st);
+            Matcher o = g.matcher(st);
+            //If find any hostname after ERROR put the hostname to list and message to text
+            if (m.find()) {
+                list.add(m.group(1));
+                text.add(st);//ArrayList Containing all messages
+            }
+            //If find any hostname after WARNING put the hostname to list and message to text
+            else if(n.find()){
+                list.add(n.group(1));
+                text.add(st);//ArrayList Containing all messages
+            }
+            //Put all the info message into text
+            else if(o.find())
+            {
+                text.add(st);
+            }
+        }
+        //set for deleting duplicate element from the list
+        Set<String> set = new LinkedHashSet<String>(list);
+        list.clear();
+        list.addAll(set);
+
+        //Calculating the number or ERROR and WARNING in each host
+        for (String aList : list) {
+            int error = 0, warning=0, info=0;
+            for (String bList : text) {
+                if ((bList.contains(aList) && bList.contains("ERROR"))){
+                    error++;
+                }
+                else if((bList.contains(aList) && bList.contains("WARNING"))){
+                    warning++;
+                }
+                else if((bList.contains(aList) && bList.contains("INFO"))){
+                    info++;
+                }
+            }
+            c.add(error);
+            d.add(warning);
+            x.add(info);
+        }
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println("Host "+list.get(i));
+            System.out.println("-----------------------------------");
+            System.out.println("-----------------------------------");
+            System.out.println(c.get(i)+ " - [ERROR]");
+            System.out.println(d.get(i)+ " - [WARNING]");
+
+            if(x.get(i)==0)
+            {
+                System.out.println("100%"+"Error/Warning");
+            }
+            else
+            {
+                float par= ((d.get(i)+c.get(i))*100)/x.get(i);
+                percentage=percentage+par;
+                String num = String.format ("%.0f", par);
+
+                System.out.println(num+"%"+" Error/Warning");
+            }
+            System.out.println();
+        }
+        percentage = ((d.size()+c.size())*100)/text.size();
+        String num = String.format ("%.0f", percentage);
+        System.out.println("Total:"+num+"%"+" Error/Warning - "+text.size()+" Message send/received");
+    }
+}
+

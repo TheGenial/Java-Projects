@@ -1,0 +1,19 @@
+Various Linux Command:
+
+1.First Login as root user: sudo -s
+  Add user without password non-interactively: adduser --disabled-password --gecos "" username
+
+2.First Login as root user: sudo -s
+  Create a new user account: adduser username
+  Add the new user to sudo group: usermod -aG sudo username
+
+3.(.ssh) directory is reserved for ssh keys and configuration. we can delete .ssh folder by deleting existing one by
+  (mv ~/.ssh) or rename the existing item (mv ~/.ssh ~/.ssh.bak) to create the new one as (mkdir ~/.ssh).
+
+4.Change directory from home to .ssh folder as: cd .ssh
+  Create a new folder named as id_rsa: touch id_rsa
+
+5.Change the file permission of id_rsa so that it can only be read by a user: chmod 444 id_rsa
+
+6.Change the ownership of the user’s home directory (including all files and folders) to the user:sudo chown -R username:group directory
+ 

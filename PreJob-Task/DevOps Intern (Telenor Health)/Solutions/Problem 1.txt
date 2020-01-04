@@ -1,0 +1,3 @@
+Finding the geolocation about an ip:
+
+fetch(`http://ip-api.com/json/${prompt('IP?')}`).then(res => res.json()).then(d => console.info(`${d.city}, ${d.regionName} (${d.country})`))

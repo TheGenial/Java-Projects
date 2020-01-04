@@ -1,0 +1,10 @@
+Query to output the names of those students whose best friends got offered a higher salary than them:
+
+SELECT M2.NAME 
+   FROM (SELECT M.NAME, M.SALARY AS salary, M.FRIEND_ID, packages.ID, packages.SALARY AS friend_salary 
+	FROM packages 
+	   JOIN ( (SELECT students.ID,students.NAME,friends.FRIEND_ID,packages.SALARY FROM ((students 
+	   JOIN friends ON students.ID=friends.ID) 
+	   JOIN packages ON students.ID=packages.ID)) AS M) 
+	ON packages.ID=M.FRIEND_ID) AS M2 
+   WHERE M2.FRIEND_SALARY > M2.SALARY;
